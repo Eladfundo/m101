@@ -7,7 +7,7 @@ Blog Post
 </head>
 <body>
 %if (username != None):
-Welcome {{username}}        <a href="/logout">Logout</a> | 
+Welcome {{username}}        <a href="/logout">Logout</a> |
 %end
 <a href="/">Blog Home</a><br><br>
 
@@ -16,17 +16,17 @@ Posted {{post['date']}}<i> By {{post['author']}}</i><br>
 <hr>
 {{!post['body']}}
 <p>
-<em>Filed Under</em>: 
+<em>Filed Under</em>:
 %if ('tags' in post):
 %for tag in post['tags'][0:1]:
-{{tag}}
+<a href="/tag/{{tag}}">{{tag}}</a>
 %for tag in post['tags'][1:]:
-, {{tag}}
+, <a href="/tag/{{tag}}">{{tag}}</a>
 %end
 %end
 %end
 <p>
-Comments: 
+Comments:
 <ul>
 %if ('comments' in post):
 %numComments = len(post['comments'])
