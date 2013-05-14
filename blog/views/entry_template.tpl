@@ -7,7 +7,7 @@ Blog Post
 </head>
 <body>
 %if (username != None):
-Welcome {{username}}        <a href="/logout">Logout</a> |
+Welcome {{username}}        <a href="/logout">Logout</a> | 
 %end
 <a href="/">Blog Home</a><br><br>
 
@@ -16,7 +16,7 @@ Posted {{post['date']}}<i> By {{post['author']}}</i><br>
 <hr>
 {{!post['body']}}
 <p>
-<em>Filed Under</em>:
+<em>Filed Under</em>: 
 %if ('tags' in post):
 %for tag in post['tags'][0:1]:
 <a href="/tag/{{tag}}">{{tag}}</a>
@@ -26,7 +26,7 @@ Posted {{post['date']}}<i> By {{post['author']}}</i><br>
 %end
 %end
 <p>
-Comments:
+Comments: 
 <ul>
 %if ('comments' in post):
 %numComments = len(post['comments'])
@@ -34,7 +34,11 @@ Comments:
 %numComments = 0
 %end
 %for i in range(0, numComments):
+<form action="/like" method="POST">
+<input type="hidden" name="permalink", value="{{post['permalink']}}">
+<input type="hidden" name="comment_ordinal", value="{{i}}">
 Author: {{post['comments'][i]['author']}}<br>
+Likes: {{post['comments'][i]['num_likes']}} <input type="submit" value="Like"></form><br>
 {{post['comments'][i]['body']}}<br>
 <hr>
 %end
@@ -49,6 +53,7 @@ Author: {{post['comments'][i]['author']}}<br>
 <b>Comment</b><br>
 <textarea name="commentBody" cols="60" rows="10">{{comment['body']}}</textarea><br>
 <input type="submit" value="Submit">
+</form>
 </ul>
 </body>
 </html>
