@@ -1,0 +1,12 @@
+use enron
+var query = {
+	"headers.From" : "andrew.fastow@enron.com",
+	"headers.To": "john.lavorato@enron.com"
+}
+db.messages.find(query).count()
+
+var query = {
+	"headers.From" : "andrew.fastow@enron.com",
+	"headers.To": "jeff.skilling@enron.com"
+}
+db.messages.find(query).count()

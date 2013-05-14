@@ -1,0 +1,49 @@
+use enron
+db.messages.aggregate([
+  {
+    $project : {
+            _id : 1,
+            "headers.From" : 1,
+            "headers.To" : 1
+    }
+  },
+  {$unwind:"$headers.To"},
+  {
+    $match:{
+      'headers.From':{
+        $in:[
+          "susan.mara@enron.com",
+          "soblander@carrfut.com",
+          "evelyn.metoyer@enron.com"
+        ]
+      }
+    }
+  },
+  {
+    $match:{
+      'headers.To':{
+        $in:[
+          "jeff.dasovich@enron.com",
+          "richard.shapiro@enron.com",
+          "soblander@carrfut.com",
+          "james.steffes@enron.com",
+          "kate.symes@enron.com",
+          "alan.comnes@enron.com"
+        ]
+      }
+    }
+  },
+  {
+    $group : {
+            _id : {id:"$_id",from:"$headers.From",to:"$headers.To"},
+            "mails" : {$sum:1}
+    }
+  },
+  {
+    $group : {
+            _id : {from:"$_id.from",to:"$_id.to"},
+            "num" : {$sum:1}
+    }
+  },
+  {$sort:{"num":-1}},
+])

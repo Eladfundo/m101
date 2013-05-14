@@ -1,0 +1,85 @@
+use enron
+print("susan.mara@enron.com to jeff.dasovich@enron.com")
+var query = {
+	"headers.From" : "susan.mara@enron.com",
+	"headers.To": "jeff.dasovich@enron.com"
+}
+db.messages.find(query).count()
+
+print("susan.mara@enron.com to richard.shapiro@enron.com")
+var query = {
+	"headers.From" : "susan.mara@enron.com",
+	"headers.To": "richard.shapiro@enron.com"
+}
+db.messages.find(query).count()
+
+print("soblander@carrfut.com to soblander@carrfut.com")
+var query = {
+	"headers.From" : "soblander@carrfut.com",
+	"headers.To": "soblander@carrfut.com"
+}
+db.messages.find(query).count()
+
+print("susan.mara@enron.com to james.steffes@enron.com")
+var query = {
+	"headers.From" : "susan.mara@enron.com",
+	"headers.To": "james.steffes@enron.com"
+}
+db.messages.find(query).count()
+
+print("evelyn.metoyer@enron.com to kate.symes@enron.com")
+var query = {
+	"headers.From" : "evelyn.metoyer@enron.com",
+	"headers.To": "kate.symes@enron.com"
+}
+db.messages.find(query).count()
+
+print("susan.mara@enron.com to alan.comnes@enron.com")
+var query = {
+	"headers.From" : "susan.mara@enron.com",
+	"headers.To": "alan.comnes@enron.com"
+}
+db.messages.find(query).count()
+
+print("---------")
+db.messages.aggregate([
+	{
+		$project : {
+            _id : 1,
+            "headers.From" : 1,
+            "headers.To" : 1
+    }
+  },
+	{$unwind:"$headers.To"},
+	{
+		$match:{
+			'headers.From':{
+				$in:[
+					"susan.mara@enron.com"
+				]
+			}
+		}
+	},
+	{
+		$match:{
+			'headers.To':{
+				$in:[
+					"richard.shapiro@enron.com",
+				]
+			}
+		}
+	},
+  {
+    $group : {
+            _id : {id:"$_id",from:"$headers.From",to:"$headers.To"},
+            "num" : {$sum:1}
+    }
+  },
+  {
+    $group : {
+            _id : {from:"$_id.from",to:"$_id.to"},
+            "num" : {$sum:1}
+    }
+  },
+  {$sort:{"num":-1}},
+])
