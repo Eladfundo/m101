@@ -1,0 +1,5 @@
+use enron
+var query = {
+	"headers.From" : "andrew.fastow@enron.com",
+}
+db.messages.find(query,{"headers.From":true,"headers.To":true})
