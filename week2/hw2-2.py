@@ -3,7 +3,7 @@ import pymongo
 import sys
 
 # establish a connection to the database
-connection = pymongo.Connection("mongodb://localhost", safe=True)
+connection = pymongo.MongoClient("mongodb://localhost")
 
 # get a handle to the school database
 db=connection.students
